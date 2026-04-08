@@ -1,15 +1,22 @@
-﻿using System;
+using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Configuration;
 
 class Program
 {
     static async Task Main(string[] args)
     {
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
         var client = new HttpClient();
 
-        string apiKey = "e4c78550354c3f5487c567e377663bbd";
+        string apiKey = config["OpenWeatherMap:ApiKey"]!;
         string city = "Columbus";
 
         string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=imperial";
